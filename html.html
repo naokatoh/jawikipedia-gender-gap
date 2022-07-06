@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Wikipedia Text Analysis</title>
+
+
+
+    <style>
+        body {
+            margin:auto;
+            padding:50px 10px;
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+        }
+
+        .serif {
+            font-family: 'Lora', serif;
+        }
+        .sans-serif {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* choose a light or dark theme to add to the body tag. */
+        .dark-theme {
+            background-color: #151515;
+            color: #fbfbfb;
+        }
+        .light-theme {
+            background-color: white;
+            color:#333;
+        }
+
+        .header {
+            padding-top:20px;
+            padding-bottom:20px;
+        }
+
+        .story-body, .header, .chart-section, .footer {
+            margin:auto;
+            max-width: 700px;
+        }
+
+
+		.top-picture {
+            margin:auto;
+            max-width: 800px;
+        }
+
+        .footer {
+            padding-top:20px;
+            padding-bottom:20px;
+        }
+
+        .chart-section.wide{
+            width:100%;
+            max-width:1200px;
+        }
+
+        .chart-section.wide p.chart-title {
+            width:100%;
+            max-width:700px;
+            margin-left:auto;
+            margin-right:auto;
+        }
+        .chart-section.wide p.chart-subhead {
+            width:100%;
+            max-width:700px;
+            margin-left:auto;
+            margin-right:auto;
+        }
+
+
+        /* text styles */
+
+        p.kicker {
+            font-size:1rem;
+            text-transform:uppercase;
+        }
+
+        .text-center {
+            text-align:center;
+        }
+
+        h1.headline {
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 0.25rem;
+            margin-top: 1rem;
+            font-weight: 800;
+        }
+
+        h2.subhead {
+            font-size: 1.4rem;
+            line-height: 2rem;
+            margin-bottom:0;
+            margin-top: 15px;
+            font-weight: 400;
+        }
+
+        p.body-text {
+            font-size: 1.1rem;
+            line-height: 1.4;
+            margin-top:0;
+            margin-bottom:15px;
+            color: #333;
+        }
+
+        h3.section-head {
+            font-size:2rem;
+            margin:40px 0 10px 0;
+            font-weight:700;
+            line-height:1.3;
+        }
+
+        .byline {
+            font-size: 1.1rem;
+            line-height: 0.75;
+            margin-top: 1.5rem;
+            font-weight: 500;
+            color:#666;
+        }
+
+        .date {
+            font-size: 0.85rem;
+            line-height: 1;
+            margin-top: 10px;
+            font-weight:400;
+            text-transform:uppercase;
+            letter-spacing:0.5px;
+            color:#666;
+        }
+
+
+        p.note {
+            font-size:0.85rem;
+        }
+
+        /* chart styles */
+
+        .chart-section {
+            width:100%;
+            max-width:700px;
+            margin-top: 5rem;
+            padding:0px 0px;
+        }
+
+        .story-body .chart-section {
+            padding-top:0px;
+        }
+
+        
+        .chart-row {
+            display:flex;
+            /* justify-content: space-between; */
+            margin-top:0px;
+        }
+
+        p.chart-title {
+            font-size:1.3rem;
+            font-weight:700;
+            max-width:700px;
+            /* margin:0px auto 5px auto; */
+        }
+        p.chart-subhead {
+            margin:0 auto;
+            max-width:700px;
+            font-size:1rem;
+            margin-bottom:15px;
+        }
+
+        p.chart-label {
+            margin:0 0 5px 0;
+            font-size:0.85rem;
+            text-transform:uppercase;
+            font-weight:600;
+        }
+
+        .chart-row .chart {
+            width:100%;
+            padding-right:0 ;
+            min-width:calc(25% - 15px);
+
+        }
+
+
+
+        p.chart-source {
+            font-size:0.85rem;
+            margin:0;
+        }
+
+        .container {
+            border: 2px solid #ccc;
+             margin-bottom: 30px;
+             display: flex;
+        }
+
+
+
+
+        /* These are the styles for ai2html */
+        
+        #g-ratmouse_svg-_1, #g-ratmouse_svg-medium, #g-ratmouse_svg-_2 {
+            display: none;
+        }
+
+        @media (max-width: 490px) {
+            #g-ratmouse_svg-_2 {
+                display: block;
+            }
+        }
+
+        @media (min-width: 490px) and (max-width: 620px) {
+            #g-ratmouse_svg-_1 {
+                display: block;
+            }
+        }
+
+        @media (min-width: 620px)  {
+            #g-ratmouse_svg-medium {
+                display: block;
+            }
+        }
+
+    </style>
+
+
+<style>
+    .row-container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 2em;
+    }
+    
+    .column-container {
+      flex-grow: 1;
+    }
+    
+    @media (max-width: 350px) {
+      .row-container {
+        flex-direction: column;
+      }
+    }
+    </style>
+</head>
+<body>
+<h1>Japanese Wikipedia's Text Analysis</h1>
+<div class="chart-section">
+  
+    <iframe title="Only 30% of the Wikipedia articles on scientists are on female" aria-label="Pie Chart" id="datawrapper-chart-bziTH" src="https://datawrapper.dwcdn.net/bziTH/2/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="592"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+    </script>
+</div>
+
+<h2>Category: Scientist</h2>
+<p>The number of articles between female and male scientists is apparent but the content of the article does not show the tangible difference. </p>
+
+<div class="chart-section">
+<!-- #female scientists -->
+<iframe title="The most common nouns/ verbs/ adjectives in articles on female scientists" aria-label="Table" id="datawrapper-chart-qMqAv" src="https://datawrapper.dwcdn.net/qMqAv/7/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1053"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+</script>
+
+<!-- male scientists -->
+   
+<iframe title="The most common nouns/ verbs/ adjectives in articles on male scientists" aria-label="Table" id="datawrapper-chart-3vTqO" src="https://datawrapper.dwcdn.net/3vTqO/4/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1087"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+</script>
+    
+</div>
+<h2>Category: Japanese Idols</h2>
+<p>More than 90% of the articles on Japanese idols are on female idols. The word "graduation" appears frequently in articles about female idols, which means quitting an idol group. The word "graduation" does not appear in male idols, perhaps because they often move on to acting or other entertainment careers as they get older. </p>
+
+<div class="chart-section">
+<!-- female J idols -->
+<iframe title="The most common nouns/ verbs/ adjectives in articles on Japanese female Idols" aria-label="Table" id="datawrapper-chart-EUIeI" src="https://datawrapper.dwcdn.net/EUIeI/3/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1094"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+</script>
+<!-- male J idols -->
+<iframe title="The most common nouns/ verbs/ adjectives in articles on male Japanese idols" aria-label="Table" id="datawrapper-chart-gVu4Y" src="https://datawrapper.dwcdn.net/gVu4Y/3/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1109"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+</script>
+
+</div>
+<h2>Category: Prince and Princess</h2>
+<p>The princesses' articles frequently use words describing their appearance and youth, such as "beautiful", "very young", and "young", whereas the princes' articles do not. </p>
+
+<div class="chart-section">
+    <!-- maleFigureSkaterss -->
+    <iframe title="The most common nouns/ verbs/ adjectives in articles on maleFigureSkaterss" aria-label="Table" id="datawrapper-chart-Zp7sO" src="https://datawrapper.dwcdn.net/Zp7sO/5/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1045"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+    </script>
+<!-- maleFigureSkater -->
+
+<iframe title="The most common nouns/ verbs/ adjectives in articles on maleFigureSkater" aria-label="Table" id="datawrapper-chart-cLMxe" src="https://datawrapper.dwcdn.net/cLMxe/6/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1073"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+</script>
+
+
+</div>    
+
+<h2>Category: figure skater</h2>
+<p>Articles on figure skaters are more numerous for female athletes. Perhaps because figure skating is not necessarily a sport in which masculinity is valued, feminine words such as "beautiful" are used more frequently in articles about men. </p>
+
+<div class="chart-section">
+    <!-- female figure skater -->
+    <iframe title="The most common nouns/ verbs/ adjectives in articles on female figure skaters" aria-label="Table" id="datawrapper-chart-hdnlM" src="https://datawrapper.dwcdn.net/hdnlM/2/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1082"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+    </script>
+
+<!-- male figure skater -->
+<iframe title="The most common nouns/ verbs/ adjectives in articles on male figure skaters" aria-label="Table" id="datawrapper-chart-m1qc5" src="https://datawrapper.dwcdn.net/m1qc5/2/" scrolling="no" frameborder="0" style="width: 0; min-width: 100% !important; border: none;" height="1079"></iframe><script type="text/javascript">!function(){"use strict";window.addEventListener("message",(function(e){if(void 0!==e.data["datawrapper-height"]){var t=document.querySelectorAll("iframe");for(var a in e.data["datawrapper-height"])for(var r=0;r<t.length;r++){if(t[r].contentWindow===e.source)t[r].style.height=e.data["datawrapper-height"][a]+"px"}}}))}();
+</script>
+
+</div>
+
+
+
+
+</body>
+</html>
